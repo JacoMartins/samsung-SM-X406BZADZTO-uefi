@@ -1,0 +1,4 @@
+stub/build/
+out/
+*.tar.md5
+*.img

@@ -88,6 +88,9 @@ export async function runView(root, sessionId) {
 
   // ---------------- intro & calibration ----------------
   const cfg = session.config;
+  const nativeApp = !!globalThis.__vcwNative;   // Android app: native immersive mode instead of the Fullscreen API
+  const touch = matchMedia('(hover: none)').matches;
+  let fsUnavailable = nativeApp || !document.documentElement.requestFullscreen;
   const resuming = session.cursor.trial > 0 || session.trials.some((t) => t.exposure);
   clear(surface);
   surface.append(h('div', { class: 'stage-msg' }, h('h2', {}, 'Measuring display…'), h('p', {}, 'Please wait a moment and keep this window in front.')));
@@ -103,14 +106,14 @@ export async function runView(root, sessionId) {
   await waitSpace([
     h('h2', {}, resuming ? 'Resume session' : 'Before you begin'),
     h('p', {}, resuming ? 'The trial that was interrupted will be skipped, because its image has already been seen.' : `${session.trials.length} trials${session.trials.some((t) => t.practice) ? `, starting with ${session.trials.filter((t) => t.practice).length} practice trial(s) that are not scored` : ''}. Each image is shown only once and disappears automatically. You will not be told whether answers are correct until the end.`),
-    h('p', {}, 'Sit at a comfortable distance, avoid distractions, and look at the cross in the centre before each image. Press ', h('span', { class: 'kbd' }, 'Esc'), ' to pause at any time.'),
+    h('p', {}, 'Sit at a comfortable distance, avoid distractions, and look at the cross in the centre before each image. ', touch ? 'Tap Pause (top right) to pause at any time.' : ['Press ', h('span', { class: 'kbd' }, 'Esc'), ' to pause at any time.']),
     h('p', { style: { fontSize: '13px' } }, `Display: about ${refresh.estimatedHz.toFixed(1)} Hz${refresh.stable ? '' : ' (irregular — close other tabs for better timing)'}. Exposures are rounded to whole frames: ${quant.join('; ')}. Actual on-screen times are measured and recorded, but browsers cannot guarantee exact photon timing.`),
-  ], { button: cfg.fullscreen ? 'Enter fullscreen & start' : 'Start' });
+  ], { button: cfg.fullscreen && !fsUnavailable ? 'Enter fullscreen & start' : 'Start' });
 
   async function ensureFullscreen() {
-    if (!cfg.fullscreen || document.fullscreenElement || !document.documentElement.requestFullscreen) return;
+    if (!cfg.fullscreen || fsUnavailable || document.fullscreenElement) return;
     try { await document.documentElement.requestFullscreen({ navigationUI: 'hide' }); await sleep(350); logEvent(session, 'fullscreen-enter'); }
-    catch { logEvent(session, 'fullscreen-denied'); }
+    catch { fsUnavailable = true; logEvent(session, 'fullscreen-denied'); }
   }
   await ensureFullscreen();
 
@@ -126,6 +129,8 @@ export async function runView(root, sessionId) {
     const s = Math.min(1, (innerWidth - 32) / 960, (innerHeight - 32) / 600);
     return { w: Math.round(960 * s), h: Math.round(600 * s), scale: s };
   };
+  session.environment.platform = nativeApp ? `${globalThis.__vcwNative.platform}-app (native immersive mode)` : 'browser';
+  if (nativeApp) logEvent(session, 'native-immersive');
   session.environment.screen = { w: screen.width, h: screen.height, dpr: devicePixelRatio, viewport: { w: innerWidth, h: innerHeight } };
   session.environment.stimulusCss = stageSize();
 
@@ -156,7 +161,7 @@ export async function runView(root, sessionId) {
         await waitSpace([h('p', {}, 'Ready for the next image?')], { button: 'Start trial' });
       }
       if (quitting) break;
-      if (cfg.fullscreen && !document.fullscreenElement) {
+      if (cfg.fullscreen && !fsUnavailable && !document.fullscreenElement) {
         await waitSpace([h('h2', {}, 'Fullscreen was exited'), h('p', {}, 'Return to fullscreen to keep conditions consistent.')], { button: 'Return to fullscreen' });
         await ensureFullscreen();
       }

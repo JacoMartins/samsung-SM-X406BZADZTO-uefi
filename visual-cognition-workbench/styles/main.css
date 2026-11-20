@@ -272,3 +272,8 @@ details.trial[open] summary { border-bottom: 1px solid var(--line); }
 .method p, .method li { color: var(--ink-2); max-width: 720px; }
 .method ul { padding-left: 18px; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* touch devices: keyboard hints are noise */
+@media (hover: none) { .kbd, .option .key { display: none; } }
+/* respect display cut-outs / rounded corners in the Android app */
+.topbar { padding-left: max(24px, env(safe-area-inset-left)); padding-right: max(24px, env(safe-area-inset-right)); }

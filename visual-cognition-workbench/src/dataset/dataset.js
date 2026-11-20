@@ -157,6 +157,7 @@ let externalEntries = [];
  * fields simply disable the questions that need them.
  */
 export async function loadExternalManifest(url = 'data/external/manifest.json') {
+  if (globalThis.location?.protocol === 'file:') return 0; // standalone file: no manifest to fetch
   try {
     const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) return 0;

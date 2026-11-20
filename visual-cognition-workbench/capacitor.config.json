@@ -1,0 +1,11 @@
+{
+  "appId": "app.visualcognition.workbench",
+  "appName": "Visual Cognition",
+  "webDir": "www",
+  "android": {
+    "backgroundColor": "#1e1f22",
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  }
+}

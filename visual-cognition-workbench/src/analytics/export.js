@@ -54,10 +54,25 @@ export function sessionToCSV(session) {
   return rows.join('\r\n');
 }
 
-export function download(filename, text, type = 'application/json') {
+export async function download(filename, text, type = 'application/json') {
+  const native = globalThis.__vcwNative;
+  if (native) {
+    try {
+      const copy = await native.saveFile(filename, text);
+      notify(copy ? `Saved to Documents/VisualCognition/${filename}` : `Exported ${filename}`);
+    } catch (e) { notify(`Export failed: ${e?.message || e}`); }
+    return;
+  }
   const blob = new Blob([text], { type });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob); a.download = filename;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+function notify(msg) {
+  if (typeof document === 'undefined') return;
+  const t = document.createElement('div');
+  t.className = 'toast'; t.setAttribute('role', 'status'); t.textContent = msg;
+  document.body.append(t); setTimeout(() => t.remove(), 3500);
 }

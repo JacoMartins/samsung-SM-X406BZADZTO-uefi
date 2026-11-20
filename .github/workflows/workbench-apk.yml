@@ -1,0 +1,76 @@
+name: Visual Cognition Workbench — Android APK
+
+on:
+  push:
+    branches: [claude/visual-cognition-testing-workbench-18upq0, main, master]
+    paths:
+      - 'visual-cognition-workbench/**'
+      - '.github/workflows/workbench-apk.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: visual-cognition-workbench
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: visual-cognition-workbench/package-lock.json
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Tests
+        run: npm test
+
+      - name: Standalone HTML
+        run: npm run build:standalone
+
+      - name: Sync web assets into the Android project
+        run: npm run android:sync
+
+      - name: Build debug-signed APK
+        working-directory: visual-cognition-workbench/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Collect outputs
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk dist/visual-cognition-workbench.apk
+          ls -la dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: visual-cognition-workbench
+          path: visual-cognition-workbench/dist/*
+
+      - name: Publish as a pre-release (direct download link)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: workbench-build-${{ github.run_number }}
+          name: Visual Cognition Workbench — build ${{ github.run_number }}
+          target_commitish: ${{ github.sha }}
+          prerelease: true
+          body: |
+            Android app (debug-signed, for sideloading) and a standalone single-file web version.
+            - `visual-cognition-workbench.apk` — install on Android 5.1+ (allow "install unknown apps" for your browser or file manager).
+            - `visual-cognition-workbench.html` — open in any modern browser; runs offline.
+            Built from ${{ github.sha }}.
+          files: |
+            visual-cognition-workbench/dist/visual-cognition-workbench.apk
+            visual-cognition-workbench/dist/visual-cognition-workbench.html

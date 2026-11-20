@@ -13,8 +13,9 @@ times and confidence calibration.
 
 ## Running
 
-No build step and no dependencies. Serve the folder over HTTP (ES modules do not
-load from `file://`):
+No build step and no runtime dependencies for the web version. Serve the folder
+over HTTP (ES modules do not load from `file://`; use the standalone build for
+that):
 
 ```sh
 npm start            # node tools/serve.js → http://localhost:8080
@@ -27,6 +28,27 @@ Sessions are stored in the browser's localStorage. Export each session as JSON
 (complete record) or CSV (one row per response) from the results page.
 "View simulated demo" on the home page builds a clearly labelled simulated
 session for previewing the dashboard.
+
+## Standalone versions
+
+**Android app (APK).** The `android/` folder is a Capacitor project that wraps
+the workbench in a native app. It runs in immersive full-screen (system bars
+hidden), keeps the screen awake during testing, works fully offline, and saves
+exports via the Android share sheet (also copied to
+`Documents/VisualCognition/` where permitted). The GitHub Actions workflow
+`.github/workflows/workbench-apk.yml` builds a debug-signed APK on every push
+and publishes it as a pre-release named "Visual Cognition Workbench — build N".
+Open that release on the device, download `visual-cognition-workbench.apk`, and
+allow your browser or file manager to install unknown apps. To build locally
+you need JDK 17 and the Android SDK: `npm ci && npm run android:apk`.
+
+**Single HTML file.** `npm run build:standalone` writes
+`dist/visual-cognition-workbench.html`, one self-contained file that runs
+offline when opened directly in a browser (desktop or mobile). Data is stored
+in that browser, per file location.
+
+Sessions are stored on the device (app storage or browser localStorage), never
+uploaded anywhere.
 
 ## Modules
 

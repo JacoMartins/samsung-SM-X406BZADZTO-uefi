@@ -16,7 +16,7 @@ Exynos 7570 UEFI port: the UEFI firmware is wrapped so it looks like an arm64 Li
 
 | Stage | What | State |
 |---|---|---|
-| 0 | Unlock, dump firmware, get kernel source | plan written |
+| 0 | Unlock, dump firmware, get kernel source | **blocked: OEM unlocking missing on device (see stage1-plan Step 6)** |
 | 1 | Hardware facts: memory map, UART, framebuffer, UFS | tools written |
 | 2 | "Hello world" payload in recovery (prove S-Boot runs our code) | stub written and emulator-tested, not run on device |
 | 3 | EDK2 platform package, boot to UEFI shell on the framebuffer | not started |

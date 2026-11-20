@@ -132,6 +132,17 @@ Stage 2 will paint a known pattern there; the colours you see tell you the forma
 
 ## Step 6 — Unlock and disable verified boot
 
+> **Blocker found (2026-11-20):** on the user's tablet the **OEM unlocking** entry
+> is missing from Developer options (it normally sits between "Desktop backup
+> password" and "Stay awake"). Since One UI 8 (Android 16), Samsung has removed
+> bootloader unlocking from firmware in all regions, not only the US, per reports
+> from July 2025 (Android Authority, SamMobile, GSMArena). If this tablet's
+> firmware has that change, it cannot be unlocked and **nothing from Step 7 on
+> can run**: S-Boot will refuse an unsigned recovery image. Check in download
+> mode (Vol Up + Vol Down + USB): the screen shows `OEM LOCK` and `KG STATE`, and
+> on an unlockable device the warning screen offers "long press Volume Up to
+> unlock". Steps 1–5 (reading firmware and kernel source) still work.
+
 1. Settings → Developer options → **OEM unlocking** on. (Some carrier/region
    firmwares hide it until the device has been online for several days.)
 2. Power off, hold **Vol Up + Vol Down** and plug in USB → long-press Vol Up to

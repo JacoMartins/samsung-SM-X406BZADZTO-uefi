@@ -39,3 +39,7 @@ Exynos 7570 UEFI port: the UEFI firmware is wrapped so it looks like an arm64 Li
 Unlocking the bootloader trips Knox permanently (Samsung Pay, Secure Folder and some
 banking apps stop working) and wipes user data. Keep a full copy of the stock firmware
 for your exact build so you can restore with Odin.
+
+## Also in this repository
+
+- `visual-cognition-workbench/` — a separate, self-contained brief-exposure visual cognition testing workbench (research instrument). See its README.

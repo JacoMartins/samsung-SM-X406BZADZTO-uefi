@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Visual Cognition Workbench</title>
+  <meta name="description" content="Brief-exposure visual cognition testing workbench — an experimental research instrument, not a diagnostic tool.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2318181a'/%3E%3Cpath d='M9 16h14M16 9v14' stroke='%23fff' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles/main.css">
+  <script>
+    try { const t = JSON.parse(localStorage.getItem('vcw.v1.prefs') || '{}').theme; if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+  <header class="topbar" id="topbar">
+    <a class="brand" href="#/">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">Visual Cognition Workbench</span>
+    </a>
+    <nav class="topnav" aria-label="Main">
+      <a href="#/" data-route="home">Sessions</a>
+      <a href="#/setup" data-route="setup">New session</a>
+      <a href="#/dataset" data-route="dataset">Dataset</a>
+      <a href="#/method" data-route="method">Method</a>
+    </nav>
+    <button class="icon-btn" id="themeToggle" type="button" aria-label="Toggle colour theme" title="Toggle colour theme">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z" fill="currentColor"/></svg>
+    </button>
+  </header>
+  <main id="app" tabindex="-1"></main>
+  <div id="tooltip" class="tooltip" role="status" aria-live="polite" hidden></div>
+  <noscript><p style="padding:24px">This workbench requires JavaScript.</p></noscript>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

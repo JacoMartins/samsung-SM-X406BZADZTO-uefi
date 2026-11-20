@@ -2,3 +2,5 @@ stub/build/
 out/
 *.tar.md5
 *.img
+node_modules/
+e2e-shots/

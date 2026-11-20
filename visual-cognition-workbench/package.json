@@ -14,7 +14,7 @@
     "android:apk": "npm run android:sync && cd android && ./gradlew assembleDebug"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "license": "MIT",
   "dependencies": {

@@ -3,11 +3,21 @@
 Fill in as you confirm each item. Note the source (DTB, kernel source, /proc/iomem,
 fbtest screen) next to every value. Unconfirmed values go in the "guess" column.
 
-Firmware build: `X406B...` (must match the kernel source and the images used)
+Firmware build: `X406BXXS8CZI2` (must match the kernel source and the images used)
+
+As read from Settings → About tablet → Software information on 2026-11-20:
+
+- One UI 8.5, Android 16, security patch 2026-09-05
+- Build `BP4A.251205.006.X406BXXS8CZI2`, CSC `SAOMC_SM-X406B_OWO_ZTO_16_0006`
+- Kernel `5.15.189-android13-3` (GKI 5.15), built 2026-09-10
+- Bootloader revision (binary) **8**: the digit after `XXS`. Firmware with a lower
+  revision cannot be flashed, so downgrading to One UI 7 is not possible
+- OEM unlocking: **not shown** in Developer options
 
 | Item | Value | Source | Confirmed? |
 |---|---|---|---|
 | SoC | Exynos 1380 (s5e8835) | Samsung spec | yes |
+| Bootloader unlockable | probably not (One UI 8.5, toggle missing) | Settings | check download mode |
 | boot.img header version | | unpack_bootimg | |
 | recovery.img header version | | unpack_bootimg | |
 | recovery partition exists | | AP tar / by-name | |

@@ -220,3 +220,20 @@ You are ready for the EDK2 port when you have, in `docs/device-facts.md`:
   (EL3 stays Samsung's).
 - Target: UEFI shell on screen, driven by volume keys (GPIO) since touch needs a
   real driver.
+
+## Possible future route: SVE-2026-3546 (watch only, do not attempt yet)
+
+Found 2026-11-21. `github.com/Gabriel2392/SVE-2026-3546` is a proof of concept for
+unsigned code loading in Samsung's S-LK bootloader. It uses that to **permanently
+fuse a custom Secure Boot key (KEY2)** and then flash re-signed bootloader images.
+It is not an OEM unlock: after fusing, the device only boots images signed with
+your key, and this cannot be undone.
+
+- Implemented for: s5e8825, s5e9925.
+- s5e8835 (Exynos 1380, this tablet) is only listed as "possible" — no
+  implementation.
+- No affected firmware or fixing patch level is stated; an SVE number means
+  Samsung knows about it, so a security update has probably fixed it or will.
+  Unknown whether X406BXXS8CZI2 (patch 2026-09-05) is vulnerable.
+- Related tooling: `github.com/henr1kas/Exynos` (split/patch/re-sign Exynos
+  bootloader images; s5e8835 not listed).

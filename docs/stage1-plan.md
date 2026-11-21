@@ -132,6 +132,9 @@ Stage 2 will paint a known pattern there; the colours you see tell you the forma
 
 ## Step 6 — Unlock and disable verified boot
 
+> **Blocker confirmed (2026-11-21):** `getprop ro.oem_unlock_supported` returns
+> nothing on X406BXXS8CZI2 (see device-facts.md).
+>
 > **Blocker found (2026-11-20):** on the user's tablet the **OEM unlocking** entry
 > is missing from Developer options (it normally sits between "Desktop backup
 > password" and "Stay awake"). Since One UI 8 (Android 16), Samsung has removed

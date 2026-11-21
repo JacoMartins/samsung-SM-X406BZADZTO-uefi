@@ -13,11 +13,25 @@ As read from Settings → About tablet → Software information on 2026-11-20:
 - Bootloader revision (binary) **8**: the digit after `XXS`. Firmware with a lower
   revision cannot be flashed, so downgrading to One UI 7 is not possible
 - OEM unlocking: **not shown** in Developer options
+- Device codename: `gts10lite`
+
+ADB `getprop` results (2026-11-21):
+
+| Property | Value | Meaning |
+|---|---|---|
+| `ro.oem_unlock_supported` | *(empty)* | firmware does not offer bootloader unlocking |
+| `sys.oem_unlock_allowed` | *(empty)* | no unlock toggle exists |
+| `ro.boot.flash.locked` | `1` | bootloader locked |
+| `ro.boot.verifiedbootstate` | `green` | verified boot, stock images |
+| `ro.boot.warranty_bit` | `0` | Knox not tripped |
+| `ro.boot.bootloader` | `X406BXXS8CZI2` | bootloader revision 8 |
+
+**Conclusion: this unit cannot be bootloader-unlocked on current firmware.**
 
 | Item | Value | Source | Confirmed? |
 |---|---|---|---|
 | SoC | Exynos 1380 (s5e8835) | Samsung spec | yes |
-| Bootloader unlockable | probably not (One UI 8.5, toggle missing) | Settings | check download mode |
+| Bootloader unlockable | no | getprop (ro.oem_unlock_supported empty) | yes |
 | boot.img header version | | unpack_bootimg | |
 | recovery.img header version | | unpack_bootimg | |
 | recovery partition exists | | AP tar / by-name | |

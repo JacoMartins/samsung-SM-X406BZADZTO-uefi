@@ -54,3 +54,10 @@ ADB `getprop` results (2026-11-21):
 | UFS host controller base | | DTB | |
 | SD card controller base | | DTB | |
 | Volume key GPIOs | | DTB gpio-keys | |
+
+## Same-SoC device checked: Galaxy A54 5G (SM-A546E, `a54x`)
+
+2026-11-21, via ADB: build `CP2A.260605.016.A546EXXUNGZJ5`, bootloader
+`A546EXXUNGZJ5` (revision N), `ro.oem_unlock_supported` empty,
+`sys.oem_unlock_allowed` empty, `ro.boot.flash.locked` = 1.
+**Not unlockable either**; not usable as an alternative bring-up target.
